@@ -1,4 +1,4 @@
-﻿{
+{
   "manifest_version": 2,
   "name": "Zotero Glossary",
   "version": "0.2.2",
@@ -10,16 +10,9 @@
   "applications": {
     "zotero": {
       "id": "glossary@zotero.local",
-      "update_url": "https://example.com/zotero-glossary-updates.json",
+      "update_url": "https://raw.githubusercontent.com/ChaoPlayer/zotero-glossary/main/update.json",
       "strict_min_version": "7.0",
       "strict_max_version": "10.9.9"
     }
   }
 }
-
-
-
-
-
-
-
