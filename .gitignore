@@ -1,0 +1,12 @@
+# 构建产物（通过 GitHub Releases 发布，不入库）
+*.xpi
+
+# 调试探针 / 临时分析文件
+test-min/
+test-min-bss/
+_translate-main.js
+
+# 系统文件
+Thumbs.db
+.DS_Store
+desktop.ini
