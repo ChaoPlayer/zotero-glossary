@@ -1,82 +1,81 @@
-# Zotero Glossary（专业名词查询）
+# Zotero Glossary
 
-> 在 Zotero 7/8/9 中阅读文献时，选中生僻专业名词 → 点击「🔍 专业名词查询」→ 由大模型（默认 DeepSeek）给出**中文解释 + 英文释义 + 例句**，并可收藏到自己的**多名词本**（EN ⇄ ZH），构建个人术语库。
+<p align="center">
+  <img src="logo.png" alt="Zotero Glossary" width="180" />
+</p>
+
+> Look up unfamiliar technical terms while reading in Zotero. Select a word in a PDF, EPub, webpage or note, click the "Term Lookup" button, and an LLM (DeepSeek by default) explains it — then save it to your own **multi-book glossary** (EN ⇄ ZH).
 
 [![Zotero](https://img.shields.io/badge/Zotero-7%2F8%2F9-blue)](https://www.zotero.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 ![platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
 
-## ✨ 特性
+[中文文档](README.zh-CN.md)
 
-- **点击式查询，省 token**：选中文字后只出现一个小按钮（紧贴选中词），**点击才调用大模型 API**，避免误选/拖选浪费 token
-- **专业名词解释**：中文解释、英文释义、所属学科、例句，由 LLM 生成（OpenAI 兼容端点，默认 DeepSeek）
-- **领域提示词**：在设置中填写你的研究领域（如「电池、电池管理系统」），查询缩写/专业词时优先按该领域解释
-- **多名词本**：可创建多个名词本（如按课题/文章分类），收藏时选择目标名词本；支持新建 / 重命名 / 删除 / 搜索 / 复制 / 删除条目
-- **设置面板**：API Key、模型、超时、研究领域、名词本管理，全部在 **编辑 → 设置 → Glossary** 中完成
-- **多入口**：PDF/EPub 阅读器（官方 Reader 事件）、网页/笔记选词、工具栏按钮、`Ctrl+Alt+B` 名词本、`Ctrl+Alt+Q` 手动查询
+---
 
-## 📦 安装
+## ✨ Features
 
-1. 前往 [Releases](https://github.com/OWNER/zotero-glossary/releases) 下载最新的 `zotero-glossary.xpi`
-2. Zotero 7/8/9：**工具 → 附加组件 → 齿轮 → Install Add-on From File…** → 选择该文件
-3. 重启 Zotero
-4. **编辑 → 设置 → Glossary**：填入 DeepSeek API Key（[platform.deepseek.com](https://platform.deepseek.com) 注册获取），点「测试连接」验证
+- **Click-to-query, token friendly** — selecting text never calls the API; a small button appears right next to your selection, and only clicking it triggers the LLM. No wasted tokens from accidental or mid-drag selections.
+- **Full explanations** — Chinese explanation, English definition, field/category, and an example sentence.
+- **Domain-aware prompts** — configure your research field in settings (e.g. "battery, battery management systems"); acronyms like *SOC*, *BMS*, *SEI* are explained from that domain first.
+- **Multiple glossary books** — organize saved terms per project or per paper; create, rename, delete, search, copy, and remove entries anytime.
+- **Any OpenAI-compatible endpoint** — DeepSeek works out of the box (just an API key); point it at any compatible service by changing the base URL and model.
+- **Multiple entry points** — PDF/EPub reader, webpages and notes, the Tools menu, toolbar button, `Ctrl+Alt+B` for the glossary, `Ctrl+Alt+Q` for a manual lookup.
 
-> 兼容任何 OpenAI 风格 `/chat/completions` 端点：修改 **API Base URL** 与 **模型** 即可。
+## 📦 Installation
 
-## 🚀 使用
+1. Download the latest `zotero-glossary.xpi` from the [Releases](https://github.com/ChaoPlayer/zotero-glossary/releases) page.
+2. In Zotero: **Tools → Add-ons → gear icon → Install Add-on From File…** → select the file.
+3. Restart Zotero.
+4. **Edit → Settings → Glossary**: paste your API key (get one at [platform.deepseek.com](https://platform.deepseek.com)), click **Test Connection**, then **Save**.
 
-| 操作 | 效果 |
+> Any OpenAI-compatible `/chat/completions` endpoint works: change **API Base URL** and **model** in settings.
+
+## 🚀 Usage
+
+| Action | Result |
 |---|---|
-| 选中文献中的词 | 选中词下方出现「🔍 专业名词查询」按钮 |
-| 点击按钮 | 发起大模型查询，弹出解释卡片 |
-| 卡片内「收藏到 [名词本]」+ ☆ 收藏 | 术语加入指定名词本 |
-| 菜单 工具 → Zotero Glossary → 专业名词本（或 `Ctrl+Alt+B`） | 浏览名词本条目 |
-| 编辑 → 设置 → Glossary → 名词本管理 | 新建 / 重命名 / 删除名词本、查看条目 |
-| 设置 → 研究领域 | 如「电池、电池管理系统」→ 缩写按领域优先解释 |
+| Select a term in a document | A "🔍 专业名词查询 (Term Lookup)" button appears right below Zotero's selection popup |
+| Click the button | The LLM explains the term in a card (Chinese + English + example) |
+| Choose a glossary book and click ☆ Favorite | The term is saved to that book |
+| **Tools → Zotero Glossary → Glossary** (or `Ctrl+Alt+B`) | Browse your glossary entries |
+| **Edit → Settings → Glossary → Book management** | Create / rename / delete glossary books, view entries |
+| Settings → **Research fields** | e.g. "battery, battery management systems" — acronyms are explained from that domain first |
 
-名词本数据保存在 Zotero 数据目录下的 `zotero-glossary.json`（可在设置中改名）。
+Glossary data is stored in `zotero-glossary.json` in your Zotero data directory (renameable in settings). Multiple books are supported; the default book cannot be deleted.
 
-## 🔧 开发
+## ⚙️ Settings
 
-### 环境
-- Node.js（仅用于语法校验 `node --check`）
-- Windows PowerShell（`build.ps1` 打包，也可手动压缩为 zip 改后缀 `.xpi`）
+- **API Key / Base URL / Model / Temperature / Timeout** — the LLM provider.
+- **Research fields** — a hint sent with every lookup so abbreviations are resolved in your domain first.
+- **Popup on selection** — whether the lookup button appears when text is selected.
+- **Selection length limits** — minimum/maximum selection size that triggers the button.
+- **Glossary file name** — where the glossary JSON lives.
+- **Book management** — create, rename and delete glossary books.
 
-### 构建
-```powershell
-powershell -ExecutionPolicy Bypass -File .\build.ps1
-# 生成 zotero-glossary.xpi（zip 内条目必须用正斜杠，脚本已处理）
-```
+## 🛠 Development
 
-### 目录结构
+- Requirements: Node.js (for `node --check` syntax validation) and PowerShell (`build.ps1`).
+- Build: `powershell -ExecutionPolicy Bypass -File .\build.ps1` → produces `zotero-glossary.xpi`.
+- The addon is plain JavaScript, no runtime dependencies; source layout:
+
 ```
 zotero-glossary/
-├── manifest.json              # Zotero 9 格式清单（applications.zotero）
-├── bootstrap.js               # 根目录生命周期入口（经典 bootstrap）
-├── build.ps1                  # 一键打包 XPI
+├── manifest.json        # addon manifest (applications.zotero, Zotero 7-10)
+├── bootstrap.js         # classic root bootstrap (lifecycle)
+├── build.ps1            # one-click XPI packaging
 └── addon/modules/
-    ├── prefs.js               # 偏好（含研究领域）
-    ├── llm.js                 # LLM 客户端 + 领域提示词
-    ├── glossary.js            # 多名词本存储（JSON，v2 数据模型）
-    ├── ui.js                  # 共享 UI（XUL 兼容元素创建）
-    ├── popup.js               # 查询卡片 + 点击式查询小按钮
-    ├── glossary-pane.js       # 名词本浏览面板
-    ├── selection.js           # 选词捕获（Reader 官方事件）
-    ├── settings.js            # 设置面板（XUL 片段 + 名词本管理）
-    └── boot.js                # 装配（工具菜单、快捷键）
+    ├── prefs.js         # preferences (incl. research fields)
+    ├── llm.js           # LLM client + domain-aware prompt
+    ├── glossary.js      # multi-book storage (JSON, v2 model)
+    ├── ui.js            # shared UI helpers / styles
+    ├── popup.js         # query card + click-to-query button
+    ├── glossary-pane.js # glossary browsing panel
+    ├── selection.js     # selection capture (Zotero Reader event)
+    ├── settings.js      # preferences pane + book management
+    └── boot.js          # wiring (Tools menu, shortcuts)
 ```
-
-### Zotero 9 兼容性要点（踩坑记录）
-- manifest 用 **`applications.zotero`**（不是 `applications.gecko`），且 `id`/`update_url`/`strict_max_version` 必填
-- **不要用 `experiment_apis`**（Zotero 9 会优先走该路径导致 bootstrap 不被调用）；用根目录 `bootstrap.js` 经典模式（`startup({id,version,resourceURI,rootURI})` + `await Zotero.initializationPromise`）
-- `Zotero.Reader.registerEventListener("renderTextSelectionPopup", ...)` 是 PDF 选词的正确姿势
-- 主窗口是 XUL：无 `document.body`；HTML 元素须 `createElementNS(XHTML)`；偏好面板是 XUL 片段（非 HTML 文档）
-- 插件沙箱无 `AbortController`、无 `ChromeUtils.import()`
-
-## 📤 更新机制
-
-`manifest.json` 中 `update_url` 应指向一个更新清单（Firefox update manifest 格式）。发布新版本时可同步更新 `update.json` 与 Releases 附件。仓库内已保留占位说明。
 
 ## 📄 License
 
