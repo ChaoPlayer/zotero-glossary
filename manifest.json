@@ -1,7 +1,7 @@
-{
+﻿{
   "manifest_version": 2,
   "name": "Zotero Glossary",
-  "version": "0.2.2",
+  "version": "0.2.14",
   "description": "Select a term while reading to look it up via an LLM (DeepSeek by default), and build your own bilingual glossary of technical terms (EN/CN).",
   "author": "Zotero Glossary Contributors",
   "icons": {
@@ -16,3 +16,15 @@
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+

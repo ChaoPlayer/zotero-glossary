@@ -11,6 +11,8 @@
 ZG.ui = (() => {
   let _doc = null; // main window document
 
+  // Only the header/footer bars use the fixed beige palette; everything else
+  // follows the Zotero theme variables for native contrast.
   const STYLE = `
     .zg-root {
       font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -30,8 +32,8 @@ ZG.ui = (() => {
     .zg-root .zg-header {
       display: flex; align-items: center; gap: 6px;
       padding: 8px 12px;
-      background: var(--fill-secondary, #f0f0f4);
-      border-bottom: 1px solid var(--fill-quaternary, #e0e0e6);
+      background: #f3ebd7;
+      border-bottom: 1px solid #e0d5b5;
       font-weight: 600;
     }
     .zg-root .zg-term {
@@ -55,8 +57,8 @@ ZG.ui = (() => {
     .zg-root .zg-footer {
       display: flex; align-items: center; gap: 8px;
       padding: 8px 12px;
-      border-top: 1px solid var(--fill-quaternary, #e0e0e6);
-      background: var(--fill-secondary, #f7f7fa);
+      border-top: 1px solid #e0d5b5;
+      background: #f6efdd;
     }
     .zg-root .zg-btn {
       border: 1px solid var(--fill-quaternary, #c9c9cf);

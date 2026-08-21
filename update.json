@@ -3,8 +3,8 @@
     "glossary@zotero.local": {
       "updates": [
         {
-          "version": "0.2.2",
-          "update_link": "https://github.com/ChaoPlayer/zotero-glossary/releases/download/v0.2.2/zotero-glossary.xpi"
+          "version": "0.2.14",
+          "update_link": "https://github.com/ChaoPlayer/zotero-glossary/releases/download/v0.2.14/zotero-glossary.xpi"
         }
       ]
     }

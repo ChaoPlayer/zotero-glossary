@@ -35,8 +35,18 @@ ZG.selection = (() => {
       maybeShow(sel, e.clientX, e.clientY, "", win);
     });
 
+    // NOTE: no global main-window mousedown handler here. Hiding the chip on
+    // "click elsewhere" is handled by the follow loop, which detects that
+    // Zotero's selection popup was removed. A main-window capture-phase
+    // mousedown listener would run BEFORE the chip's own mousedown (capture
+    // phase descends document -> target) and hide the chip, swallowing the
+    // click that should start the query.
+
     doc.addEventListener("keyup", (e) => {
-      if (e.key === "Escape") ZG.popup.hide();
+      if (e.key === "Escape") {
+        ZG.popup.hide();
+        ZG.popup.hideTrigger();
+      }
     });
   }
 
@@ -60,8 +70,11 @@ ZG.selection = (() => {
   }
 
   /** Fired by Zotero when text is selected in a reader. Shows the
-   *  click-to-query chip NEAR the selection (inside the reader document, so
-   *  coordinates are naturally correct); no LLM call yet. */
+   *  click-to-query chip just BELOW Zotero's selection popup (never inside
+   *  it, so it cannot overlap the translation plugin's box). A read-only
+   *  follow loop keeps the chip below the popup and hides it when the popup
+   *  closes. No document listeners or observers are installed, so other
+   *  plugins (e.g. the translation add-on) are never affected. */
   function onTextSelectionPopup(event) {
     try {
       const { reader, doc, params } = event;
@@ -75,51 +88,24 @@ ZG.selection = (() => {
       const maxLen = Number(p.get("maxSelectionLength")) || 80;
       if (!isValidTerm(text, minLen, maxLen)) return;
 
-      // Wait a tick so Zotero has rendered its own selection popup, then
-      // position the chip right below it (same document → same coordinates).
+      // Wait a tick so Zotero has rendered its selection popup (and the
+      // translation plugin has appended its content), then anchor the chip
+      // below it. If the popup is already gone (fast deselect), show nothing.
       setTimeout(() => {
         try {
-          let x = 100;
-          let y = 100;
-          if (doc) {
-            const popupEl = doc.querySelector(".selection-popup");
-            if (popupEl) {
-              const r = popupEl.getBoundingClientRect();
-              if (r && r.width) {
-                x = r.left;
-                y = r.bottom + 6;
-              }
-            } else {
-              const vw = doc.defaultView;
-              const sel = vw && vw.getSelection ? vw.getSelection() : null;
-              if (sel && !sel.isCollapsed && sel.rangeCount > 0) {
-                const r = sel.getRangeAt(0).getBoundingClientRect();
-                if (r && r.width) {
-                  x = r.left;
-                  y = r.bottom + 6;
-                }
-              }
-            }
-          }
-
-          // Main-window coordinates for the query card (which lives in the
-          // main window): reader coordinates + iframe offset.
-          let mainX = x;
-          let mainY = y;
+          let popup = null;
           try {
-            const vw = doc ? doc.defaultView : null;
-            if (vw && vw.frameElement && vw.frameElement.getBoundingClientRect) {
-              const fr = vw.frameElement.getBoundingClientRect();
-              mainX = x + fr.left;
-              mainY = y + fr.top;
-            }
+            popup = doc ? doc.querySelector(".selection-popup") : null;
           } catch (e) {
-            Zotero.debug(`[Zotero Glossary] main coords: ${e}`, 2);
+            popup = null;
           }
-
-          ZG.popup.showTriggerInDoc({ term: text, doc, x, y, mainX, mainY });
+          if (!popup) {
+            Zotero.debug("[Zotero Glossary] skip chip: selection popup gone");
+            return;
+          }
+          ZG.popup.showTriggerBelow({ term: text, doc, popup });
         } catch (e) {
-          Zotero.debug(`[Zotero Glossary] showTrigger: ${e}`, 2);
+          Zotero.debug(`[Zotero Glossary] showTriggerBelow: ${e}`, 2);
         }
       }, 120);
     } catch (e) {
@@ -178,6 +164,13 @@ ZG.selection = (() => {
 
     if (_timer) clearTimeout(_timer);
     _timer = setTimeout(() => {
+      // Selection may already be cleared (fast deselect) — then skip.
+      try {
+        const s = win && win.getSelection ? win.getSelection() : null;
+        if (!s || s.isCollapsed || !String(s.toString() || "").trim()) return;
+      } catch (e) {
+        /* ignore */
+      }
       const doc = win ? win.document : null;
       const context = doc && sel ? extractContext(doc, sel) : "";
       // Click-to-query: only show the chip; query starts on click.
